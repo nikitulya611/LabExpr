@@ -17,12 +17,20 @@ vector<string> split(string s)
 	return result;
 }
 
-bool isNumber(string s)
+int isNumber(string s)
 {
-	for (char c : s)
-		if (!isdigit(c))
-			return false;
-	return true;
+	bool isNegative = false;
+	if (s[0] == '-' && s.size() > 1)
+	{
+		isNegative = true;
+		s = s.substr(1, s.size() - 1);
+	}
+
+	for (int i = 0; i < s.size(); i++)
+		if (!isdigit(s[i]))
+			return 0;
+
+	return isNegative ? -1 : 1;
 }
 
 void doOperation(Stack<int>& s, string operation)
@@ -95,6 +103,17 @@ string Expression::toRPN() const
 	string result = "";
 	vector<string> v = split(expr);
 	Stack<Operation> s(20);
+
+	for (int i = 0; i < v.size(); i++)
+	{
+		if (isNumber(v[i]) == -1)
+		{
+			v[i] = v[i].substr(1, v[i].size() - 1);
+			v.insert(v.begin() + i, "-");
+			v.insert(v.begin() + i, "0");
+			i++;
+		}
+	}
 
 	for (string str : v)
 	{

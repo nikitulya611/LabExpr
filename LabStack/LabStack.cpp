@@ -10,7 +10,6 @@ int main()
 	cin >> e;
 
 	cout << e.calculate();
-	
 
 	return 0;
 }

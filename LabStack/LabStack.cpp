@@ -9,7 +9,15 @@ int main()
 
 	cin >> e;
 
-	cout << e.calculate();
+	cout << 'g';
+
+	try {
+		cout << e.calculate();
+	}
+	catch(...)
+	{
+		cout << "Error";
+	}
 
 	return 0;
 }

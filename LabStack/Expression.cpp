@@ -1,5 +1,60 @@
 #include "Expression.h"
 
+string getClearString(string str)
+{
+	string s = "";
+	for (char c : str)
+	{
+		if (c == '(' || c == ')' || c == '<' || c == '>' ||
+			c == '{' || c == '}' || c == '[' || c == ']')
+			s += c;
+	}
+	return s;
+}
+
+bool isOpenBracket(char c)
+{
+	return c == '<' || c == '(' || c == '[' || c == '{';
+}
+
+char getPairBracket(char c)
+{
+	switch (c)
+	{
+	case '<':
+		return '>';
+	case '{':
+		return '}';
+	case '[':
+		return ']';
+	case '(':
+		return ')';
+	}
+	return ' ';
+}
+
+bool isRightString(string str)
+{
+	str = getClearString(str);
+	Stack<char> brackets(100);
+	for (char c : str)
+	{
+		if (isOpenBracket(c))
+			brackets.push(c);
+		else {
+			if (brackets.isEmpty())
+				return false;
+			if (getPairBracket(brackets.peek()) == c)
+				brackets.pop();
+			else return false;
+		}
+	}
+	if (brackets.isEmpty())
+		return true;
+	return false;
+}
+
+
 vector<string> split(string s)
 {
 	vector<string> result;
@@ -82,6 +137,7 @@ int Expression::calculate() const
 {
 	if (!checkBrackets())
 		throw "Brackets Error";
+	std::cout << "In";
 
 	Stack<int> s(100);
 	string str = toRPN();
@@ -157,7 +213,7 @@ string Expression::toRPN() const
 
 bool Expression::checkBrackets() const
 {
-	return true;
+	return isRightString(expr);
 }
 
 std::ostream& operator<<(std::ostream& out, const Expression& exp)

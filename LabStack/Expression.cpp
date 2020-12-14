@@ -39,54 +39,52 @@ int isNumber(string s)
 	}
 
 	for (int i = 0; i < s.size(); i++)
-		if (!isdigit(s[i]))
+		if (!isdigit(s[i]) && s[i] != '.')
 			return 0;
 
 	return isNegative ? -1 : 1;
 }
 
-void doOperation(Stack<int>& s, string operation)
+void doOperation(Stack<double>& s, string operation)
 {
 	if (operation == "+")
 	{
-		int second = s.pop();
-		int first = s.pop();
+		double second = s.pop();
+		double first = s.pop();
 		s.push(first + second);
 		return;
 	}
 	if (operation == "-")
 	{
-		int second = s.pop();
-		int first = s.pop();
+		double second = s.pop();
+		double first = s.pop();
 		s.push(first - second);
 		return;
 	}
 	if (operation == "*")
 	{
-		int second = s.pop();
-		int first = s.pop();
+		double second = s.pop();
+		double first = s.pop();
 		s.push(first * second);
 		return;
 	}
 	if (operation == "/")
 	{
-		int second = s.pop();
-		int first = s.pop();
-		if (second == 0)
+		double second = s.pop();
+		double first = s.pop();
+		if (second == 0.0)
 			throw string("Divide by zero");
 		s.push(first / second);
 		return;
 	}
 	if (operation == "^")
 	{
-		int second = s.pop();
-		int first = s.pop();
+		double second = s.pop();
+		double first = s.pop();
 		s.push(pow(first, second));
 		return;
 	}
 }
-
-
 
 Expression::Expression(string ex) : expr(ex), countOfError(0)
 {
@@ -122,7 +120,7 @@ vector< pair<int, int> > Expression::checkBrackets(string str)
 	return table;
 }
 
-int Expression::calculate()
+double Expression::calculate()
 {
 	if (expr.empty())
 		return 0;
@@ -131,19 +129,18 @@ int Expression::calculate()
 	if (countOfError)
 		throw table;
 
-	Stack<int> s(100);
+	Stack<double> s(100);
 	string str = toRPN();
 	vector<string> v = split(str);
 
 	for (string op : v)
 	{
 		if (isNumber(op))
-			s.push(stoi(op));
+			s.push(std::stod(op));
 		else doOperation(s, op);
 	}
 
 	return s.pop();
-
 }
 
 string Expression::toRPN() const

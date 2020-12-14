@@ -6,7 +6,6 @@ using namespace std;
 
 int main()
 {
-	setlocale(LC_ALL, "RUS");
 	while (true)
 	{
 		system("cls");
@@ -14,7 +13,7 @@ int main()
 		cin >> e;
 
 		try {
-			int result = e.calculate();
+			double result = e.calculate();
 			if (!e.getErrors())
 			{
 				cout << "RPN: " << e.toRPN() << endl << result;
@@ -22,7 +21,7 @@ int main()
 		}
 		catch (vector< pair<int, int> > table)
 		{
-			cout << "Неправильная расстановка скобок, таблица соответствия: " << endl;
+			cout << "Error with brackets, table: " << endl;
 			for (pair<int, int> p : table)
 				cout << p.first << ' ' << p.second << endl;
 		}
@@ -32,10 +31,11 @@ int main()
 		}
 		catch (PopEmptyStackException e)
 		{
-			cout << "Недостаточно операндов";
+			cout << "Not enough operands";
 		}
 		_getch();
 	}
+
 
 	return 0;
 }

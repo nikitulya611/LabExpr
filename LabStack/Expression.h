@@ -79,7 +79,7 @@ class Expression
 public:
 	Expression(string ex = "");
 
-	int calculate();
+	double calculate();
 
 	friend std::ostream& operator<<(std::ostream& out, const Expression& exp);
 	friend std::istream& operator>>(std::istream& in, Expression& exp);

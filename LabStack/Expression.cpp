@@ -12,49 +12,6 @@ string getClearString(string str)
 	return s;
 }
 
-bool isOpenBracket(char c)
-{
-	return c == '<' || c == '(' || c == '[' || c == '{';
-}
-
-char getPairBracket(char c)
-{
-	switch (c)
-	{
-	case '<':
-		return '>';
-	case '{':
-		return '}';
-	case '[':
-		return ']';
-	case '(':
-		return ')';
-	}
-	return ' ';
-}
-
-bool isRightString(string str)
-{
-	str = getClearString(str);
-	Stack<char> brackets(100);
-	for (char c : str)
-	{
-		if (isOpenBracket(c))
-			brackets.push(c);
-		else {
-			if (brackets.isEmpty())
-				return false;
-			if (getPairBracket(brackets.peek()) == c)
-				brackets.pop();
-			else return false;
-		}
-	}
-	if (brackets.isEmpty())
-		return true;
-	return false;
-}
-
-
 vector<string> split(string s)
 {
 	vector<string> result;
@@ -129,15 +86,48 @@ void doOperation(Stack<int>& s, string operation)
 
 
 
-Expression::Expression(string ex) : expr(ex)
+Expression::Expression(string ex) : expr(ex), countOfError(0)
 {
 }
 
-int Expression::calculate() const
+vector< pair<int, int> > Expression::checkBrackets(string str)
 {
-	if (!checkBrackets())
-		throw "Brackets Error";
-	std::cout << "In";
+	str = getClearString(str);
+	Stack<int> brackets(100);
+	countOfError = 0;
+	vector< pair<int, int> > table;
+
+	for (int i = 0; i < str.size(); i++)
+	{
+		if (str[i] == '(')
+			brackets.push(i+1);
+		else if (str[i] == ')')
+		{
+			if (!brackets.isEmpty())
+				table.push_back(pair<int, int>(brackets.pop(), i+1));
+			else {
+				table.push_back(pair<int, int>(0, i+1));
+				countOfError++;
+			}
+		}
+	}
+	while (!brackets.isEmpty())
+	{
+		table.push_back(pair<int, int>(brackets.pop(), 0));
+		countOfError++;
+	}
+
+	return table;
+}
+
+int Expression::calculate()
+{
+	if (expr.empty())
+		return 0;
+	vector< pair<int, int> > table = checkBrackets(expr);
+
+	if (countOfError)
+		throw table;
 
 	Stack<int> s(100);
 	string str = toRPN();
@@ -209,11 +199,6 @@ string Expression::toRPN() const
 	}
 
 	return result;
-}
-
-bool Expression::checkBrackets() const
-{
-	return isRightString(expr);
 }
 
 std::ostream& operator<<(std::ostream& out, const Expression& exp)

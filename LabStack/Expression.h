@@ -3,11 +3,12 @@
 #include <string>
 #include <vector>
 #include "Stack.h"
-
 #include <iostream>
+
 
 using std::string;
 using std::vector;
+using std::pair;
 
 struct Operation
 {
@@ -78,15 +79,16 @@ class Expression
 public:
 	Expression(string ex = "");
 
-	int calculate() const;
+	int calculate();
 
 	friend std::ostream& operator<<(std::ostream& out, const Expression& exp);
 	friend std::istream& operator>>(std::istream& in, Expression& exp);
 
 private:
-	bool checkBrackets() const;
+	vector< pair<int, int> > checkBrackets(string str);
 	string toRPN() const;
 
 	string expr;
+	int countOfError;
 };
 

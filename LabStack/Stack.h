@@ -30,6 +30,7 @@ public:
 	void push(T value);
 	T pop();
 	T peek() const;
+	int size() const;
 
 	bool isEmpty();
 	bool isFull();
@@ -90,6 +91,12 @@ inline T Stack<T>::peek() const
 {
 	int index = top - 1;
 	return data[index];
+}
+
+template<class T>
+inline int Stack<T>::size() const
+{
+	return top;
 }
 
 template <class T>

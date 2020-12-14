@@ -72,6 +72,8 @@ void doOperation(Stack<int>& s, string operation)
 	{
 		int second = s.pop();
 		int first = s.pop();
+		if (second == 0)
+			throw string("Divide by zero");
 		s.push(first / second);
 		return;
 	}
@@ -199,6 +201,11 @@ string Expression::toRPN() const
 	}
 
 	return result;
+}
+
+int Expression::getErrors() const
+{
+	return countOfError;
 }
 
 std::ostream& operator<<(std::ostream& out, const Expression& exp)

@@ -30,10 +30,10 @@ public:
 	void push(T value);
 	T pop();
 	T peek() const;
-	int size() const;
 
-	bool isEmpty();
-	bool isFull();
+	int size() const;
+	bool isEmpty() const;
+	bool isFull() const;
 
 
 private:
@@ -100,13 +100,13 @@ inline int Stack<T>::size() const
 }
 
 template <class T>
-bool Stack<T>::isEmpty()
+bool Stack<T>::isEmpty() const
 {
 	return !top;
 }
 
 template <class T>
-bool Stack<T>::isFull()
+bool Stack<T>::isFull() const
 {
 	return top == max;
 }

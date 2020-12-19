@@ -10,6 +10,7 @@ int main()
 	{
 		system("cls");
 		Expression e;
+		cout << "Please input expression: ";
 		cin >> e;
 
 		try {

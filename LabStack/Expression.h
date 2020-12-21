@@ -84,12 +84,11 @@ public:
 	friend std::ostream& operator<<(std::ostream& out, const Expression& exp);
 	friend std::istream& operator>>(std::istream& in, Expression& exp);
 
-	string toRPN() const;
+	string toRPN();
 	int getErrors() const;
 
 private:
 	vector< pair<int, int> > checkBrackets(string str);
-	
 
 	string expr;
 	int countOfError;

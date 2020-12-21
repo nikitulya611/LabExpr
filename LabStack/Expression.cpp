@@ -124,10 +124,6 @@ double Expression::calculate()
 {
 	if (expr.empty())
 		return 0;
-	vector< pair<int, int> > table = checkBrackets(expr);
-
-	if (countOfError)
-		throw table;
 
 	Stack<double> s(100);
 	string str = toRPN();
@@ -143,8 +139,13 @@ double Expression::calculate()
 	return s.pop();
 }
 
-string Expression::toRPN() const
+string Expression::toRPN() 
 {
+	vector< pair<int, int> > table = checkBrackets(expr);
+
+	if (countOfError)
+		throw table;
+
 	string result = "";
 	vector<string> v = split(expr);
 	Stack<Operation> s(20);
@@ -188,6 +189,8 @@ string Expression::toRPN() const
 			}
 			s.push(op);
 		}
+
+		else throw string("Unknown symbol");
 	}
 
 

@@ -14,10 +14,11 @@ int main()
 		cin >> e;
 
 		try {
+			cout << "RPN: " << e.toRPN() << endl;
 			double result = e.calculate();
 			if (!e.getErrors())
 			{
-				cout << "RPN: " << e.toRPN() << endl << result;
+				cout << "Result: " << result;
 			}
 		}
 		catch (vector< pair<int, int> > table)
